@@ -33,6 +33,6 @@
 
    <h1> Thank You Cada vez comprendes mas </h1>
    <br>
-   <h1> Happy Learning. See You Again. :) </h1>
+   <h1> Happy Learning. See You Again. :) esfuerzate </h1>
    
 </form>
