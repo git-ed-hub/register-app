@@ -94,7 +94,10 @@ pipeline {
                 script {
 	            sh '''
 	                # Obtener el crumb de Jenkins para la protección CSRF
-	                CRUMB=$(curl -u admin:${JENKINS_API_TOKEN} http://192.168.52.139:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb))
+	                CRUMB=$(curl -s -u admin:${JENKINS_API_TOKEN} "http://192.168.52.139:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+	
+	                # Verificar si se obtuvo el crumb correctamente
+	                echo "CRUMB obtenido: $CRUMB"
 	
 	                # Lanzar la ejecución remota con el crumb
 	                curl -v -k \
