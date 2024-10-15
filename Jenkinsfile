@@ -93,13 +93,15 @@ pipeline {
             steps {
                 script {
                     sh ('''
-                curl -v -k \
-                -H "Authorization: Bearer ${JENKINS_API_TOKEN}" \
-                -H "cache-control: no-cache" \
-                -H "content-type: application/x-www-form-urlencoded" \
-                --data "IMAGE_TAG=${IMAGE_TAG}" \
-                "http://192.168.52.139:8080/job/git-ops/buildWithParameters?token=gitops-token"
-            ''')
+	                CRUMB=$(curl -u admin:${JENKINS_API_TOKEN} http://192.168.52.139:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb))
+	                curl -v -k \
+	                -H "$CRUMB" \
+	                -H "Authorization: Bearer ${JENKINS_API_TOKEN}" \
+	                -H "cache-control: no-cache" \
+	                -H "content-type: application/x-www-form-urlencoded" \
+	                --data "IMAGE_TAG=${IMAGE_TAG}" \
+	                "http://192.168.52.139:8080/job/git-ops/buildWithParameters?token=gitops-token"
+	            	''')
                 }
             }
        }
