@@ -92,22 +92,7 @@ pipeline {
        stage("Trigger CD Pipeline") {
             steps {
                 script {
-	            sh '''
-	                # Obtener el crumb de Jenkins para la protección CSRF
-	                CRUMB=$(curl -s -u admin:${JENKINS_API_TOKEN} "http://192.168.52.139:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
-	
-	                # Verificar si se obtuvo el crumb correctamente
-	                echo "CRUMB obtenido: $CRUMB"
-	
-	                # Lanzar la ejecución remota con el crumb
-	                curl -v -k \
-	                -H "$CRUMB" \
-	                -H "Authorization: Bearer ${JENKINS_API_TOKEN}" \
-	                -H "cache-control: no-cache" \
-	                -H "content-type: application/x-www-form-urlencoded" \
-	                --data "IMAGE_TAG=${IMAGE_TAG}" \
-	                "http://192.168.52.139:8080/job/git-ops/buildWithParameters?token=gitops-token"
-	            '''
+	            sh ('curl -v -k --user admin:${JENKINS_API_TOKEN} -H "cache-control: no-cache" -H "content-type: application/x-www-form-urlencoded" --data "IMAGE_TAG=${IMAGE_TAG}" "http://192.168.52.131:8080/job/git-ops/buildWithParameters?token=gitops-token"')
                 }
             }
        }
